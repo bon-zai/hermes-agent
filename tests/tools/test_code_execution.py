@@ -15,9 +15,13 @@ Run with:  python -m pytest tests/test_code_execution.py -v
 import pytest
 # pytestmark removed — tests run fine (61 pass, ~99s)
 
-
 import json
 import os
+
+# Force local terminal backend for ALL tests in this file.
+# Under xdist, another test may leak TERMINAL_ENV=modal/docker, sending
+# execute_code down the remote path → modal.exception.AuthError.
+os.environ["TERMINAL_ENV"] = "local"
 import sys
 import time
 import threading
@@ -107,18 +111,6 @@ class TestHermesToolsGeneration(unittest.TestCase):
 @unittest.skipIf(sys.platform == "win32", "UDS not available on Windows")
 class TestExecuteCode(unittest.TestCase):
     """Integration tests using the mock dispatcher."""
-
-    def setUp(self):
-        # Ensure we always use the local backend — other tests in the same
-        # xdist worker may leak TERMINAL_ENV=modal/docker.
-        self._orig_terminal_env = os.environ.get("TERMINAL_ENV")
-        os.environ["TERMINAL_ENV"] = "local"
-
-    def tearDown(self):
-        if self._orig_terminal_env is None:
-            os.environ.pop("TERMINAL_ENV", None)
-        else:
-            os.environ["TERMINAL_ENV"] = self._orig_terminal_env
 
     def _run(self, code, enabled_tools=None):
         """Helper: run code with mocked handle_function_call."""

@@ -198,6 +198,7 @@ class TestSetupWizardOpenclawIntegration:
             patch.object(setup_mod, "setup_tools"),
             patch.object(setup_mod, "save_config"),
             patch.object(setup_mod, "_print_setup_summary"),
+            patch.object(setup_mod, "_offer_launch_chat"),
         ):
             setup_mod.run_setup_wizard(args)
 
@@ -229,6 +230,7 @@ class TestSetupWizardOpenclawIntegration:
             patch.object(setup_mod, "setup_tools"),
             patch.object(setup_mod, "save_config"),
             patch.object(setup_mod, "_print_setup_summary"),
+            patch.object(setup_mod, "_offer_launch_chat"),
         ):
             setup_mod.run_setup_wizard(args)
 
@@ -261,6 +263,7 @@ class TestSetupWizardOpenclawIntegration:
             patch.object(setup_mod, "setup_tools"),
             patch.object(setup_mod, "save_config"),
             patch.object(setup_mod, "_print_setup_summary"),
+            patch.object(setup_mod, "_offer_launch_chat"),
         ):
             setup_mod.run_setup_wizard(args)
 
